@@ -15,7 +15,7 @@ Works only on linux OS
 - serverLocalIp - 0.0.0.0 or localhost for local server ip adress
 - serverGlobalIp - global ip adress or domain for example mc1.gregtechrus.ru or 345.23.345.67
 - serverGlobalPort - global port of server 25565 by default
-- serverLocalPort - loval port of server 25565 by default
+- serverLocalPort - loсal port of server 25565 by default
 - screenTag - string replace for commands
 - screenName - screen name in linux OS to use for server
 - serverStopServerCmd - server stop command to send to running screen 
