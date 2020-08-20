@@ -3,7 +3,7 @@ Programm to restart minecraft servers
 
 Allowed to check if server online localy on server and globaly on internet, by domain for example
 
-If server offline restart it the best way possible, by killing process o sending command on server screen
+If server offline restart it the best way possible, by killing process or sending command on server screen
 
 Works only on linux OS
 
