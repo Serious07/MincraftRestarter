@@ -1,4 +1,4 @@
-# MincraftRestarter
+# Mincraft Restarter
 Programm to restore minecraft state
 
 Allowed to check if server online localy on server and globaly on internet, by domain for example
