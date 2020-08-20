@@ -7,6 +7,17 @@ If server offline restart it the best way possible, by killing process or sendin
 
 Works only on linux OS
 
+# How to use?
+
+- Download last jar and configs from Build folder
+- Put it in minecraft location
+- Allow jar run as executble
+- Tweak you configs in MineRestarter/MincraftRestarter.ini
+- Run screen on server for example screen -S MinecraftRestarter
+- cd to programm location for example cd /home/username/minecraftServer/
+- run command "java -Xmx124M -Xms124M -jar MinecraftRestarter.jar" also you can create .sh to run it instead
+- Press Ctrl + A + D to exit screen
+
 # Options description
 
 - checkIntervalInSconds - interval to check server online or not
