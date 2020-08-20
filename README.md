@@ -29,6 +29,6 @@ Works only on linux OS
 - serverLocalPort - loсal port of server 25565 by default
 - screenTag - string replace for commands
 - screenName - screen name in linux OS to use for server
-- serverStopServerCmd - server stop command to send to running screen 
+- serverStopServerCmd - server stop command to send on running screen 
 - serverKillServerCmd - kill server command to OS
 - serverRunCmd - server run command
