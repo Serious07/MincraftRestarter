@@ -16,6 +16,9 @@ import org.json.JSONObject;
 
 import ru.serious07.MinecraftRestarter.json.JsonReader;
 import ru.serious07.MinecraftRestarter.main.Main;
+import ru.serious07.MinecraftRestarter.serverStatusHelper.ServerStatusParcer;
+import ru.serious07.MinecraftRestarter.serverStatusHelper.ServerStatusParcer.StatusResponse;
+import ru.serious07.MinecraftRestarter.serverStatusHelper.ServerStatusParcer.Version;
 
 public class CheckServerStatus extends Thread {
 	public CheckServerStatus() {
@@ -152,10 +155,12 @@ public class CheckServerStatus extends Thread {
 	public static boolean gloabalServerListening(String host, int port) throws JSONException, IOException {
 		boolean open = true;
 		
-		JSONObject result = JsonReader.readJsonFromUrl("https://api.mcsrvstat.us/2/" + Main.serverGlobalIp + ":" + Main.serverGlobalPort);
-		JSONObject debug = (JSONObject) result.get("debug");
-		boolean ping = debug.getBoolean("ping");
-		open = ping;
+		ServerStatusParcer serverStatusParcer = new ServerStatusParcer();
+		serverStatusParcer.setAddress(new InetSocketAddress(Main.serverGlobalIp, Main.serverGlobalPort));
+		StatusResponse serverResponce = serverStatusParcer.fetchData();
+		Version ver = serverResponce.getVersion();
+		System.out.println("Version: " + ver.getName());
+		if (ver.getName().equals("")) open = false;
 		
 		return open;
 	}
