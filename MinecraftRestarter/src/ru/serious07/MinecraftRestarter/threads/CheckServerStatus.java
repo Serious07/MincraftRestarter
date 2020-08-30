@@ -14,6 +14,7 @@ import javax.net.SocketFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ru.serious07.MinecraftRestarter.fileWriter.RestartsLogger;
 import ru.serious07.MinecraftRestarter.json.JsonReader;
 import ru.serious07.MinecraftRestarter.main.Main;
 import ru.serious07.MinecraftRestarter.serverStatusHelper.ServerStatusParcer;
@@ -30,17 +31,24 @@ public class CheckServerStatus extends Thread {
 			try {
 				Thread.sleep(Main.checkIntervalInSconds * 1000);
 				
-				showMsg("localy: " + serverPortAllowedLocaly() + " globaly: " + serverPortAllowedGlobaly());
-				
+				String restartAnswer = "";
 				if(!serverPortAllowedLocaly()) {
-					showMsg("Server offline or crash, kill and restart");
+					restartAnswer = "Server offline or crash localy, kill and restart! " + Main.serverLocalIp + ":" + Main.serverLocalPort;
+					
+					RestartsLogger.CreateLog(restartAnswer);
+					showMsg(restartAnswer);
+					
 					executeKillCommand();
 					Thread.sleep(50);
 					executRunCommand();
 					showMsg("Waiting before server starts correctly!");
 					Thread.sleep(Main.serverStartTimeInSeconds * 1000);
 				} else if (serverPortAllowedLocaly() && !serverPortAllowedGlobaly()) {
-					showMsg("Server offline for world, send restart command on server!");
+					restartAnswer = "Server offline for world, send restart command on server! " + Main.serverGlobalIp + ":" + Main.serverGlobalPort;
+					
+					RestartsLogger.CreateLog(restartAnswer);
+					showMsg(restartAnswer);
+					
 					executeStopCommand();
 					showMsg("Waiting before server stops correctly!");
 					Thread.sleep(Main.serverStopTimeInSeconds * 1000);
