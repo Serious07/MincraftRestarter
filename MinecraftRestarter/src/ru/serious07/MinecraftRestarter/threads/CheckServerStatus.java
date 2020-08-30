@@ -150,7 +150,7 @@ public class CheckServerStatus extends Thread {
 		boolean open = true;
 	    Socket socket = SocketFactory.getDefault().createSocket();
 	    try {
-	        socket.setSoTimeout(500);
+	        socket.setSoTimeout(5000);
 	        socket.connect(new InetSocketAddress(host, port));
 	        socket.close();
 	    } catch (ConnectException e) {

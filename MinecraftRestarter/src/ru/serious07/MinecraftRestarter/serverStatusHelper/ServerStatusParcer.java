@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 */
 public class ServerStatusParcer {
 	private InetSocketAddress host;
-    private int timeout = 500;
+    private int timeout = 5000;
     private Gson gson = new Gson();
     
     public void setAddress(InetSocketAddress host) {
