@@ -22,6 +22,8 @@ public class Main {
 	public static String serverKillServerCmd = "pkill -f {screenName}";
 	public static String serverRunCmd = "screen -d -m -S {screenName} java -server -XX:UseSSE=3 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=8 -XX:+AggressiveOpts -Xnoclassgc -Xms6G -Xmx6G -jar Thermos-1.7.10-1614-57-server.jar nogui";
 	
+	public static boolean falseRestartProtection = true;
+	
 	public static void main(String[] args) {
 		CreateFirstIni createFirstIni = new CreateFirstIni();
 		createFirstIni.CreateFirstIniFile();

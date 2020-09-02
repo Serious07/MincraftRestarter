@@ -31,38 +31,91 @@ public class CheckServerStatus extends Thread {
 			try {
 				Thread.sleep(Main.checkIntervalInSconds * 1000);
 				
-				String restartAnswer = "";
 				if(!serverPortAllowedLocaly()) {
-					restartAnswer = "Server offline or crash localy, kill and restart! " + Main.serverLocalIp + ":" + Main.serverLocalPort;
-					
-					RestartsLogger.CreateLog(restartAnswer);
-					showMsg(restartAnswer);
-					
-					executeKillCommand();
-					Thread.sleep(50);
-					executRunCommand();
-					showMsg("Waiting before server starts correctly!");
-					Thread.sleep(Main.serverStartTimeInSeconds * 1000);
+					if(isServerOfflineLocaly()) {
+						restartServerLocaly();
+					}
 				} else if (serverPortAllowedLocaly() && !serverPortAllowedGlobaly()) {
-					restartAnswer = "Server offline for world, send restart command on server! " + Main.serverGlobalIp + ":" + Main.serverGlobalPort;
-					
-					RestartsLogger.CreateLog(restartAnswer);
-					showMsg(restartAnswer);
-					
-					executeStopCommand();
-					showMsg("Waiting before server stops correctly!");
-					Thread.sleep(Main.serverStopTimeInSeconds * 1000);
-					executRunCommand();
-					showMsg("Waiting before server starts correctly!");
-					Thread.sleep(Main.serverStartTimeInSeconds * 1000);
-					showMsg("Waiting before API Reset cash!");
-					Thread.sleep(15 * 60 * 1000);
+					if(isServerOfflineGlobaly()) {
+						restartServerGlobaly();
+					}
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static boolean isServerOfflineLocaly() throws InterruptedException {
+		int trysAmount = 0;
+		int trysCount = 10;
+		long waitingTime = 7000;
+		
+		for(int i = 0; i < trysCount; i++) {
+			if(!serverPortAllowedLocaly()) {
+				trysAmount++;
+				
+				showMsg("Try to reach server localy! Try " + trysAmount + "/" + trysCount);
+			} else {
+				showMsg("False Restart detection! Restart is canceled!");
+				
+				return false;
+			}
+			Thread.sleep(waitingTime);
+		}
+		
+		return trysAmount == trysCount;
+	}
+	
+	public static boolean isServerOfflineGlobaly() throws InterruptedException {
+		int trysAmount = 0;
+		int trysCount = 10;
+		long waitingTime = 7000;
+		
+		for(int i = 0; i < trysCount; i++) {
+			if(!serverPortAllowedGlobaly()) {
+				trysAmount++;
+				
+				showMsg("Try to reach server globaly! Try " + trysAmount + "/" + trysCount);
+			} else {
+				showMsg("False Restart detection! Restart is canceled!");
+				
+				return false;
+			}
+			Thread.sleep(waitingTime);
+		}
+		
+		return trysAmount == trysCount;
+	}
+	
+	public static void restartServerLocaly() throws InterruptedException {
+		String restartAnswer = "Server offline or crash localy, kill and restart! " + Main.serverLocalIp + ":" + Main.serverLocalPort;
+		
+		RestartsLogger.CreateLog(restartAnswer);
+		showMsg(restartAnswer);
+		
+		executeKillCommand();
+		Thread.sleep(50);
+		executRunCommand();
+		showMsg("Waiting before server starts correctly!");
+		Thread.sleep(Main.serverStartTimeInSeconds * 1000);
+	}
+	
+	public static void restartServerGlobaly() throws InterruptedException {
+		String restartAnswer = "Server offline for world, send restart command on server! " + Main.serverGlobalIp + ":" + Main.serverGlobalPort;
+		
+		RestartsLogger.CreateLog(restartAnswer);
+		showMsg(restartAnswer);
+		
+		executeStopCommand();
+		showMsg("Waiting before server stops correctly!");
+		Thread.sleep(Main.serverStopTimeInSeconds * 1000);
+		executRunCommand();
+		showMsg("Waiting before server starts correctly!");
+		Thread.sleep(Main.serverStartTimeInSeconds * 1000);
+		showMsg("Waiting before API Reset cash!");
+		Thread.sleep(15 * 60 * 1000);
 	}
 	
 	public static void showMsg(String msg) {
