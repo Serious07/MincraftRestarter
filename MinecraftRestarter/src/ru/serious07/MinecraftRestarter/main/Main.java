@@ -1,14 +1,18 @@
 package ru.serious07.MinecraftRestarter.main;
 
+import java.io.File;
+import java.util.Date;
 import java.util.Scanner;
 
 import ru.serious07.MinecraftRestarter.ini.CreateFirstIni;
+import ru.serious07.MinecraftRestarter.restore.RestoreRegion;
 import ru.serious07.MinecraftRestarter.threads.CheckServerStatus;
 
 public class Main {
 
 	public static boolean serverIsRunning = true;
 	
+	// Restart vars
 	public static int checkIntervalInSconds = 10;
 	public static int serverStopTimeInSeconds = 15;
 	public static int serverStartTimeInSeconds = 300;
@@ -24,11 +28,19 @@ public class Main {
 	
 	public static boolean falseRestartProtection = true;
 	
+	// Restore vars
+	public static String backupsFolder = "/backups";
+	public static String serverWorldFolder = "/server/world";
+	public static String restartCommand = "restart";
+	public static boolean restoreInProgress = false;
+	
+	public static CheckServerStatus checkServerStatus;
+	
 	public static void main(String[] args) {
 		CreateFirstIni createFirstIni = new CreateFirstIni();
 		createFirstIni.CreateFirstIniFile();
 		
-		CheckServerStatus checkServerStatus = new CheckServerStatus(); 
+		checkServerStatus = new CheckServerStatus(); 
 		
 		CheckServerStatus.showMsg("Minecraft starter running!");
 		
@@ -42,9 +54,36 @@ public class Main {
 			Scanner scanner = new Scanner(System.in);
 			String cmd = scanner.nextLine();
 			
-			if(cmd.equalsIgnoreCase("exit")) {
+			String cmdargs[] = cmd.split(" ");
+			
+			if(cmdargs[0].equalsIgnoreCase("exit")) {
 				System.out.println("Minecraft Restarter colsed!");
 				serverIsRunning = false;
+			} else if (cmdargs[0].equalsIgnoreCase("restoreregion")) {
+				if(cmdargs.length == 5) {
+					int x = Integer.parseInt(cmdargs[1]);
+					int y = Integer.parseInt(cmdargs[2]);
+					int z = Integer.parseInt(cmdargs[3]);
+					String backupFolder = cmdargs[4];
+					
+					RestoreRegion restoreRegion = new RestoreRegion(x, y, z, backupFolder);
+				} else {
+					System.out.println("Example: restoreregion [x] [y] [z] [backupFolderName]");
+				}
+			} else if (cmdargs[0].equalsIgnoreCase("restoreplayer")) {
+				
+			} else if (cmdargs[0].equalsIgnoreCase("backups")) {
+				//Creating a File object for directory
+			      File directoryPath = new File(backupsFolder);
+			      //List of all files and directories
+			      String contents[] = directoryPath.list();
+			      System.out.println("Backups folders:");
+			      for(int i=0; i<contents.length; i++) {
+			    	 File tmpDirectory = new File(backupsFolder + "/" + contents[i]);
+			         if(tmpDirectory.isDirectory()) {
+			        	System.out.println(new Date(tmpDirectory.lastModified()).toString() + ": " + contents[i]);
+			         }
+			      }
 			}
 		}
 	}

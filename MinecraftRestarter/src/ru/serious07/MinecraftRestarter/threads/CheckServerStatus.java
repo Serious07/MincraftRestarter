@@ -31,13 +31,15 @@ public class CheckServerStatus extends Thread {
 			try {
 				Thread.sleep(Main.checkIntervalInSconds * 1000);
 				
-				if(!serverPortAllowedLocaly()) {
-					if(isServerOfflineLocaly()) {
-						restartServerLocaly();
-					}
-				} else if (serverPortAllowedLocaly() && !serverPortAllowedGlobaly()) {
-					if(isServerOfflineGlobaly()) {
-						restartServerGlobaly();
+				if(Main.restoreInProgress == false) {
+					if(!serverPortAllowedLocaly()) {
+						if(isServerOfflineLocaly()) {
+							restartServerLocaly();
+						}
+					} else if (serverPortAllowedLocaly() && !serverPortAllowedGlobaly()) {
+						if(isServerOfflineGlobaly()) {
+							restartServerGlobaly();
+						}
 					}
 				}
 			} catch (InterruptedException e) {
@@ -172,7 +174,7 @@ public class CheckServerStatus extends Thread {
 
 			int exitVal = process.waitFor();
 			if (exitVal == 0) {
-				System.out.println("Command excuted!");
+				System.out.println("Command " + command + " excuted!");
 				System.out.println(output);
 			} else {
 				//abnormal...
@@ -220,7 +222,7 @@ public class CheckServerStatus extends Thread {
 		serverStatusParcer.setAddress(new InetSocketAddress(Main.serverGlobalIp, Main.serverGlobalPort));
 		StatusResponse serverResponce = serverStatusParcer.fetchData();
 		Version ver = serverResponce.getVersion();
-		System.out.println("Version: " + ver.getName());
+		// System.out.println("Version: " + ver.getName());
 		if (ver.getName().equals("")) open = false;
 		
 		return open;

@@ -40,6 +40,10 @@ public class CreateFirstIni {
 			Main.serverKillServerCmd = ini.filegetS(fileadress, "Options", "serverKillServerCmd");
 			Main.serverRunCmd = ini.filegetS(fileadress, "Options", "serverRunCmd");
 			
+			Main.backupsFolder = ini.filegetS(fileadress, "Restore", "backupsFolder");
+			Main.serverWorldFolder = ini.filegetS(fileadress, "Restore", "serverWorldFolder");
+			Main.restartCommand = ini.filegetS(fileadress, "Restore", "restartCommand");
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,6 +66,10 @@ public class CreateFirstIni {
 			ini.filechange(fileadress, "Options", "serverStopServerCmd", "screen -S {screenName} -X stuff sc_restart\\r");
 			ini.filechange(fileadress, "Options", "serverKillServerCmd", "pkill -f {screenName}");
 			ini.filechange(fileadress, "Options", "serverRunCmd", "screen -d -m -S {screenName} java -server -XX:UseSSE=3 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=8 -XX:+AggressiveOpts -Xnoclassgc -Xms6G -Xmx6G -jar Thermos-1.7.10-1614-57-server.jar nogui");
+			
+			ini.filechange(fileadress, "Restore", "backupsFolder", "backups");
+			ini.filechange(fileadress, "Restore", "serverWorldFolder", "world");
+			ini.filechange(fileadress, "Restore", "restartCommand", "stop");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
